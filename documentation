@@ -1,0 +1,73 @@
+ENCRYPTION OF SYSTEM FILES FOR FUTURE RECOVERY.
+
+
+  Introduction
+
+The rising issues of stealing sensitive data owned by individuals is a common
+problem in real life scenarios as well as in storage security. Present existing systems are
+designed for personal use and only cover the needs of enterprise-class organizations, but
+the needs and security of public-class is still not to the fullest. The study estimated the average
+worth of a single stolen laptop to be about a million dollars.
+
+Here, we formalize general encryption model for storage security. We present the
+design and implementation to ensure flexibility, transparent usage of this model. This
+system will not prevent from attacks but it will protect the data from being exposed to
+unauthorized parties, and even the filesystem is accessed by unauthorized by other parties,
+they are in encrypted form which makes them inadequate to read them, and if local
+administrative is unable to physically access the file, then for the file recovery there is a
+backup button setup where he can retrieve his lost data back with key management system.
+So third parties are not benefited even if they steal them and also owner will have back his
+data back with just key management and backup setup. 
+Aim:
+Encrypting file system enhances an advanced key management scheme to provide a high grade of security while remaining transparent and easily usable. So, encrypting the file
+systems would entitle flexibility to the public class users.
+
+Algorithm
+AES ALGORITHM 
+-> Derive the set of round keys from the cipher key (i.e. password given by the user initially).
+-> Initialize the state array with the block data (user file for future recovery).
+-> Add the initial round key to the starting state array.
+Perform nine rounds of state manipulation.
+Perform the tenth and final round of state manipulation.
+Copy the final state array out as the encrypted data (encrypted file will be generated).
+
+Encryption in detail
+The order of operation in decryption is:
+Perform initial decryption round:
+XorRoundKey
+InvShiftRows
+InvSubBytes
+Perform nine full decryption rounds:
+XorRoundKey
+InvMixColumns
+InvShiftRows
+InvSubBytes
+Perform final XorRoundKey
+	The same round keys are used in the same order.
+
+NOTE:
+It takes a 128-bit block of data and transform it into ciphertext.
+Here all the operations are based on byte values and operations that are simple to implement in digital logic gates. 
+
+AES ALGORITHM IMPLEMENTATION
+we used AES algorithm because it achieves the goal of being both secure and practical for real systems. Our algorithm uses inbuilt java libraries to encrypt and decrypt.
+The S-Box was generated when libraries were included, but not displayed in any step.
+It's used in every round in the SubBytes step.
+The S-box is constant. You could see it as a function taking a byte and returning a byte. It is used to reduce algebraic properties.
+LIBRARIES USED:
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+This class provides the functionality of a cryptographic cipher for encryption and decryption. It forms the core of the Java Cryptographic Extension (JCE) framework.
+In order to create a Cipher object, the application calls the Cipher's getInstance method, and passes the name of the requested transformation to it. Optionally, the name of a provider may be specified.
+A transformation is a string that describes the operation (or set of operations) to be performed on the given input, to produce some output. A transformation always includes the name of a cryptographic algorithm (e.g., AES), and may be followed by a feedback mode and padding scheme.
+Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+block ciphers can encrypt data in units smaller than the cipher's actual block size so supporting that we request a mode "AES/OFB32/PKCS5Padding" transformations.
+The javax.crypto package defines classes and interfaces for various cryptographic operations. 
+ 
+
+conclusion
+For Decryption of files, only local administration is only capable of retrieving the
+data. The theft of a personal laptop or a USB leaves the victim vulnerable to the
+risk of identity theft in addition to the loss of personal or financial data and intellectual
+property.
+
