@@ -1,0 +1,121 @@
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Base64;
+ 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
+import java.util.Base64;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.FileReader; 
+ import java.io.FileOutputStream;  
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Scanner;
+ 
+public class enc {
+ 
+    private static SecretKeySpec secretKey;
+    private static byte[] key;
+ 
+    public static void setKey(String myKey)
+    {
+        MessageDigest sha = null;
+        try {
+            key = myKey.getBytes("UTF-8");
+            sha = MessageDigest.getInstance("SHA-1");
+            key = sha.digest(key);
+            key = Arrays.copyOf(key, 16);
+            secretKey = new SecretKeySpec(key, "AES");
+        }
+        catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+ 
+    public static String encrypt(String strToEncrypt, String secret)
+    {
+        try
+        {
+            setKey(secret);
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+	    String s=Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
+	   
+	    BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\G50-70\\Downloads\\testout.txt"));
+
+    writer.write(s);
+    writer.close();
+	
+	}
+        
+        catch (Exception e)
+        {
+            System.out.println("Error while encrypting: " + e.toString());
+        }
+        return null;
+    }
+ 
+
+public static void main(String[] args)
+{
+
+    String password = "harika";
+        String inputPass;
+        Scanner  inp = new Scanner(System.in);
+         
+        System.out.println("Enter Your Password:");
+        inputPass = inp.nextLine();
+ 
+        if (inputPass.equals(password)) {
+    
+    final String secretKey = "ssshhhhhhhhhhh!!!!";
+    StringBuilder sb = new StringBuilder();
+        String strLine = "";
+        String originalString = "";
+       String  inputFileName;
+	Scanner user = new Scanner(System.in); 
+    Scanner input = null;
+    System.out.print("Input file name:");
+    String fileName = user.next();
+    File inputFile = new File(fileName);
+
+        try {
+             BufferedReader br = new BufferedReader(new FileReader(inputFile));
+             while (strLine != null)
+             {
+                if (strLine == null)
+                  break;
+                originalString += strLine;
+                strLine = br.readLine();
+                
+            }
+              
+             br.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found");
+        } catch (IOException e) {
+            System.err.println("Unable to read the file.");
+        }
+    
+    String encryptedString = enc.encrypt(originalString, secretKey) ; 
+    //String decryptedString = really.decrypt(originalString, secretKey) ;
+    System.out.println(encryptedString);
+    //System.out.println(decryptedString);
+    }
+else{
+	System.out.println("Wrong password");
+}
+}}
